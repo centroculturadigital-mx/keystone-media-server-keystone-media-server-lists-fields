@@ -1,18 +1,27 @@
-const { Text, Relationship } = require('@keystonejs/fields');
+const { Text, Relationship, Integer} = require('@keystonejs/fields');
+const RemoteImageRelationship = require('./RemoteImageRelationship')
 
 const { atTracking } = require('@keystonejs/list-plugins');
 
 const RemoteImage = {
   fields: {
-    url: { type: Text },
+    name: {
+      type: Text
+    }, 
+    url: {
+      type: Text,
+      isRequired: true
+    },
     // descripción
     resizedImages: {
-      type: Relationship,
-      ref: 'RemoteImage'
+      type: RemoteImageRelationship,
+      ref: 'RemoteImage',
+      many: true
     },
     sizeName: { type: Text },
-    size: { type: Text },
+    size: { type: Integer },
   },
+  labelField: "url",
   plugins: [
     atTracking({
       createdAtField: 'createdAt',

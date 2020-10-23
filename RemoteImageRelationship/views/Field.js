@@ -11,6 +11,9 @@ import { gridSize } from '@arch-ui/theme';
 import { IconButton } from '@arch-ui/button';
 import Tooltip from '@arch-ui/tooltip';
 
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+
+
 // import RelationshipSelect from './RelationshipSelect';
 import { CreateItemModal, ListProvider, useList } from '@keystonejs/app-admin-ui/components';
 
@@ -125,6 +128,7 @@ function CreateAndAddItem({ field, item, onCreate }) {
         const prefill = {
           _label_: item._label_ || '<link to parent>',
           id: item.id,
+          size: item.size
         };
         return {
           ...memo,
@@ -160,11 +164,11 @@ function CreateAndAddItem({ field, item, onCreate }) {
 
 
 const Image = ({ src, remove }) => (
-  <article css={{ position: "relative", width: 160 }}>
+  <article css={{ position: "relative", width: 100 }}>
     <span onClick={()=>remove()} css={{ position: "absolute", display: "grid", placeItems: "center", top: "0", right: "0", cursor: "pointer", margin: "0.5rem", background: "#fff", borderRadius: "50%", boxShadow: "3px 3px 3px rgba(0,0,0,0.4)", width: "1rem", height: "1rem", fontSize:"12px" }}>
       <span>x</span>
     </span>
-    <img src={ src } width="160px" css={{ objectPosition: "contain" }}/>
+    <img src={ src } width="100px" css={{ objectPosition: "contain" }}/>
   </article>
 )
 
@@ -212,8 +216,46 @@ const RelationshipField = ({
   let imagenes
 
   if( many ) {
+
     imagenes = value.length > 0
-      ? value.map(v=>(<Image key={v._label_} src={v._label_} remove={()=>removeFunc(v)}/>))
+      ? value.map(v=>(
+      <div key={v.id} >
+
+        <span style={{
+          fontSize: '8px'
+        }}>
+          id: { v.id.substr(v.id.length-4) }
+        </span> 
+        
+        <CopyToClipboard
+          text={v._label_}
+          // onCopy={() => {
+            // this.setState({copied: true})
+            // setTimeout(() => {
+            //   this.setState({copied: false})
+            // }, 3000)
+          // }}
+        >
+          <div style={{
+            width: "48px",
+            textAlign: "center",
+            backgroundColor: '#ddd',
+            borderRadius: '4px',
+            padding: '4px',
+            cursor: 'pointer',
+            fontSize: '10px',
+            marginBottom: '4px'}}
+          >
+            Copy URL
+            </div>
+        </CopyToClipboard>
+
+        
+
+        <Image src={v._label_} remove={()=>removeFunc(v)}/>
+        
+      </div>
+      ))
       : emptyStateStrings.many
   }
 

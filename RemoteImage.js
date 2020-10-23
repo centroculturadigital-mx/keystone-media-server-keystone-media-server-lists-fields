@@ -5,6 +5,9 @@ const { atTracking } = require('@keystonejs/list-plugins');
 
 const RemoteImage = {
   fields: {
+    remoteId: {
+      type: Text
+    },
     name: {
       type: Text
     }, 

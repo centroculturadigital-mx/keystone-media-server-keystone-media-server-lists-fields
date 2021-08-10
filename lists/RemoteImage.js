@@ -17,6 +17,7 @@ const RemoteImage = {
     },
     // descripción
     resizedImages: {
+      // type: RemoteImageRelationship,
       type: Relationship,
       ref: 'RemoteImage',
       many: true
